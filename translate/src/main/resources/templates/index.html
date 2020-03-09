@@ -1,0 +1,106 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人翻译SITE</title>
+    <link rel="styleSheet" href="/css/bootstrap.css" type="text/css">
+    <link rel="styleSheet" href="/css/bootstrap-theme.css" type="text/css">
+</head>
+<body onload="startClock()" onunload="stopClock()">
+<h2>INDEX</h2>
+
+<h2>个人翻译助手</h2>
+<h3 id="show"></h3>
+<!-- <form  id="formT" action="/tran" method="post">
+    <input type="text" placeholder="请输入需要翻译的英文" name="source" id="source">
+   测试提交代码
+</form> -->
+
+<!-- <input type="button" class="btn btn-primary" onclick="tran()" value="翻译一下"> -->
+
+<div class="row">
+    <!-- 这是source的输入框 -->
+    <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" class="form-control" id="source" placeholder="输入您想翻译的英文">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="tran()">Go!</button>
+          </span>
+        </div>
+      </div>
+      <!-- 这是target的显示框 -->
+      <div class="col-lg-6">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">选择语言↓<span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a onclick='changeLanguage("zh")'>中文</a></li>
+                  <li><a onclick='changeLanguage("en")'>英文</a></li>
+                  <li><a onclick='changeLanguage("ko")'>韩文</a></li>
+                  <li><a onclick='changeLanguage("fr")'>法语</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">loading....</a></li>
+                </ul>
+              </div><!-- /btn-group -->
+              <input type="text" class="form-control" aria-label="..." id="target">
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+</div>
+<!-- <input type="text" placeholder="翻译后的文本" name="target" id="target"> -->
+
+
+
+
+
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+   function tran(){
+            $.ajax({
+                type:"post",
+                url:"/tran",
+                data:{source:$("#source").val()},
+                success:function(res){
+                        $("#target").val(res);
+                 }
+            });
+        }
+
+    function changeLanguage(lans){
+        var lan = lans;
+        $.ajax({
+                type:"post",
+                url:"/tran/"+lan,
+                data:{source:$("#source").val()},
+                success:function(res){
+                        $("#target").val(res);
+                 }
+            });
+    }
+
+    var timer=null;
+    function displayClock(num){//num是传入的startClock中的动态值
+      if(num<10){
+        return "0"+num;
+      }
+      else{
+        return num;
+      }
+    }
+    //停止计时
+    function stopClock(){
+      clearTimeout(timer);
+    }
+    //开始计时
+    function startClock(){
+      var time =new Date();
+      var hours=displayClock(time.getHours())+":";
+      var minutes=displayClock(time.getMinutes())+":";
+      var seconds=displayClock(time.getSeconds());
+      //显示时间
+      show.innerHTML=hours+minutes+seconds;//在id为show的块区域显示
+      timer=setTimeout("startClock()",1000);//延时器
+    }
+</script>
+<!--<button id="sub">翻译一下</button>-->
+</body>
+</html>
