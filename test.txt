@@ -1,2 +1,3 @@
 git push github test
 git push on my 1.8 merchine
+git push on master merchine
